@@ -1,16 +1,36 @@
+import axios from 'axios';
+import { useState, useEffect } from 'react';
+import highlightLastTwoWords from '../utils/highlightLastTwoWords';
+import highlightLastTwoWordsGradient from '../utils/highlightLastTwoWordsGradient';
+
 function home() {
+  const [homeContent, setHomeContent] = useState({
+    greetingMessage: '',
+    mainMessage: '',
+    subMessage: '',
+  });
+
+  useEffect(() => {
+    const fetchHomeContent = async () => {
+      try {
+        const res = await axios.get('http://localhost:5000/api/home');
+        setHomeContent(res.data);
+      } catch (err) {
+        console.error('Error fetching home content:', err);
+      }
+    };
+
+    fetchHomeContent();
+  }, []);
+
   return (
     <div className='flex flex-col justify-center items-start h-[calc(100lvh-5rem)] px-20 gap-3 max-w-6xl mx-auto'>
-      <p className='font-mono'>👋 Hey there!</p>
+      <p className='font-mono'>{homeContent.greetingMessage || 'Loading...'}</p>
       <p className='font-dm font-semibold text-4xl'>
-        I'm Harry and I like Building
-        <span className='text-[#71C9CE]'> BEAUTFIUL WEBSITES</span>
+        {highlightLastTwoWords(homeContent.mainMessage)}
       </p>
       <p className='font-dm text-lg'>
-        I'm a software developer specializing in improving&nbsp;
-        <span className='bg-linear-to-r from-amber-400 via-green-500 to-[#71C9CE] inline-block text-transparent bg-clip-text'>
-          user experience.
-        </span>
+        {highlightLastTwoWordsGradient(homeContent.subMessage)}
       </p>
     </div>
   );
