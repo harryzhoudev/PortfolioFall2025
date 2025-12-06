@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../api/client';
 
 interface CloudinaryAsset {
   publicId: string;
@@ -28,9 +28,7 @@ function About() {
         setIsLoading(true);
         setError(null);
 
-        const res = await axios.get<AboutApiResponse>(
-          'http://localhost:5001/api/about'
-        );
+        const res = await api.get<AboutApiResponse>('/api/about');
         setAbout(res.data);
       } catch (err: any) {
         console.error('Error fetching about content:', err);
@@ -43,11 +41,11 @@ function About() {
     fetchAbout();
   }, []);
 
-  const handleResumeClick = () => {
-    if (!about?.resume?.url) return;
+  // const handleResumeClick = () => {
+  //   if (!about?.resume?.url) return;
 
-    window.open(about.resume.downloadUrl, '_blank', 'noopener,noreferrer');
-  };
+  //   window.open(about.resume.downloadUrl, '_blank', 'noopener,noreferrer');
+  // };
 
   if (isLoading) {
     return (

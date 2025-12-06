@@ -31,7 +31,7 @@ function App() {
   };
 
   return (
-    <AnimatePresence mode="wait">
+    <AnimatePresence mode='wait'>
       <Routes location={location} key={location.pathname}>
         <Route
           element={
@@ -42,7 +42,7 @@ function App() {
           }
         >
           <Route
-            path="/"
+            path='/'
             element={
               <PageWrapper>
                 <Home />
@@ -50,7 +50,7 @@ function App() {
             }
           />
           <Route
-            path="/about"
+            path='/about'
             element={
               <PageWrapper>
                 <About />
@@ -58,7 +58,7 @@ function App() {
             }
           />
           <Route
-            path="/education"
+            path='/education'
             element={
               <PageWrapper>
                 <Education />
@@ -66,7 +66,7 @@ function App() {
             }
           />
           <Route
-            path="/project"
+            path='/project'
             element={
               <PageWrapper>
                 <Project />
@@ -74,7 +74,7 @@ function App() {
             }
           />
           <Route
-            path="/service"
+            path='/service'
             element={
               <PageWrapper>
                 <Service />
@@ -82,7 +82,7 @@ function App() {
             }
           />
           <Route
-            path="/contact"
+            path='/contact'
             element={
               <PageWrapper>
                 <Contact />
@@ -90,12 +90,35 @@ function App() {
             }
           />
 
-          {/* Admin route: Admin if logged in, Login page if not */}
+          {/* Admin route: Admin if logged in, Login page if not
           <Route
-            path="/admin"
+            path={isAuthenticated ? '/admin' : '/login'}
             element={
               <PageWrapper>
-                {isAuthenticated ? <Admin /> : <Login onLogin={handleLogin} />}
+                {isAuthenticated ? (
+                  <Admin onLogout={handleLogout} />
+                ) : (
+                  <Login onLogin={handleLogin} />
+                )}
+              </PageWrapper>
+            }
+          /> */}
+          {/* 🔓 Unprotected Admin route for now */}
+          <Route
+            path='/admin'
+            element={
+              <PageWrapper>
+                <Admin onLogout={handleLogout} />
+              </PageWrapper>
+            }
+          />
+
+          {/* Login route (not used yet, but ready) */}
+          <Route
+            path='/login'
+            element={
+              <PageWrapper>
+                <Login onLogin={handleLogin} />
               </PageWrapper>
             }
           />

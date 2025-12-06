@@ -66,18 +66,18 @@ function Navbar({ isAuthenticated, onLogout }: NavbarProps) {
 
   return (
     <header>
-      <div className="flex justify-between items-center px-6 py-4 bg-[#71C9CE] text-white w-screen fixed top-0 h-20 z-50 shadow-lg">
-        <Link to="/" className="text-2xl font-bold">
+      <div className='flex justify-between items-center px-6 py-4 bg-[#71C9CE] text-white w-screen fixed top-0 h-20 z-50 shadow-lg'>
+        <Link to='/' className='text-2xl font-bold'>
           <img
-            src="/logo.svg"
-            alt="Logo"
-            className="p-1 h-12 w-12 object-cover"
+            src='/logo.svg'
+            alt='Logo'
+            className='p-1 h-12 w-12 object-cover'
           />
         </Link>
 
         {/* Hamburger Button */}
         <button
-          className="md:hidden hover:cursor-pointer"
+          className='md:hidden hover:cursor-pointer'
           onClick={() => setIsOpen(!isOpen)}
         >
           <FontAwesomeIcon
@@ -92,11 +92,11 @@ function Navbar({ isAuthenticated, onLogout }: NavbarProps) {
         <AnimatePresence>
           {isOpen && (
             <motion.div
-              className="md:hidden absolute top-20 left-0 w-full bg-[#71C9CE] flex flex-col items-center text-gray-50 z-40 shadow-lg"
+              className='md:hidden absolute top-20 left-0 w-full bg-[#71C9CE] flex flex-col items-center text-gray-50 z-40 shadow-lg'
               variants={menuVariants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
+              initial='hidden'
+              animate='visible'
+              exit='exit'
             >
               {baseLinks.map((link) => (
                 <motion.div key={link.to} variants={itemVariants}>
@@ -113,7 +113,7 @@ function Navbar({ isAuthenticated, onLogout }: NavbarProps) {
               {/* Auth section (mobile) */}
               <motion.div variants={itemVariants}>
                 <Link
-                  to="/admin"
+                  to='/admin'
                   className={`block p-4 ${transitionEffect}`}
                   onClick={closeMenu}
                 >
@@ -124,8 +124,8 @@ function Navbar({ isAuthenticated, onLogout }: NavbarProps) {
               {isAuthenticated && (
                 <motion.div variants={itemVariants}>
                   <button
-                    type="button"
-                    className="block p-4 w-full text-center hover:text-amber-200 transition-colors duration-400"
+                    type='button'
+                    className='block p-4 w-full text-center hover:text-amber-200 transition-colors duration-400'
                     onClick={handleLogoutClick}
                   >
                     Logout
@@ -137,7 +137,7 @@ function Navbar({ isAuthenticated, onLogout }: NavbarProps) {
         </AnimatePresence>
 
         {/* Desktop Navbar */}
-        <nav className="hidden md:flex items-center text-gray-50">
+        <nav className='hidden md:flex items-center text-gray-50'>
           {baseLinks.map((link) => (
             <Link
               key={link.to}
@@ -149,13 +149,16 @@ function Navbar({ isAuthenticated, onLogout }: NavbarProps) {
           ))}
 
           {/* Auth section (desktop) */}
-          <Link to="/admin" className={`p-4 ${transitionEffect}`}>
+          <Link
+            to={isAuthenticated ? '/admin' : '/login'}
+            className={`p-4 ${transitionEffect}`}
+          >
             {isAuthenticated ? 'Admin' : 'Login'}
           </Link>
 
           {isAuthenticated && (
             <button
-              type="button"
+              type='button'
               className={`ml-2 px-3 py-1 rounded-md border border-white/70 text-sm ${transitionEffect}`}
               onClick={handleLogoutClick}
             >

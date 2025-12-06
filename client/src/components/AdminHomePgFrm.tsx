@@ -1,6 +1,7 @@
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import api from '../api/client';
 import { motion } from 'framer-motion';
 
 interface HomeFormData {
@@ -36,9 +37,7 @@ function AdminHomePgFrm() {
       try {
         setIsLoading(true);
 
-        const res = await axios.get<HomeApiResponse>(
-          'http://localhost:5001/api/home'
-        );
+        const res = await api.get<HomeApiResponse>('/api/home');
 
         const home = res.data;
 
@@ -69,7 +68,7 @@ function AdminHomePgFrm() {
         subMessage: data.subtext,
       };
 
-      await axios.put('http://localhost:5001/api/home', payload);
+      await api.put('/api/home', payload);
 
       setSubmitError(null);
       setSubmitSuccess('Home page updated successfully!');

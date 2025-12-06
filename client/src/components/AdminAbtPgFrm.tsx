@@ -1,7 +1,8 @@
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { useEffect, useState, type ChangeEvent } from 'react';
-import axios from 'axios';
 import { motion } from 'framer-motion';
+import axios from 'axios';
+import api from '../api/client';
 
 interface AboutFormData {
   title: string;
@@ -44,20 +45,18 @@ function AdminAbtPgFrm() {
       try {
         setIsLoading(true);
 
-        const res = await axios.get<AboutApiResponse>(
-          'http://localhost:5001/api/about'
-        );
+        const res = await api.get<AboutApiResponse>('/api/about');
 
         const about = res.data;
-        // Sets existing data into text fields in the form
+        // Set existing data into text fields in the form
         reset({
           title: about.title,
           description: about.description,
         });
-        // Save current asset URLs (if any)
+        // Save current asset URLs if any
         setResumeUrl(about.resume?.url ?? null);
         setProfilePicUrl(about.profilePic?.url ?? null);
-      } catch (error: any) {
+      } catch (error) {
         if (axios.isAxiosError(error) && error.response?.status === 404) {
           console.warn('No about content exists yet, starting fresh.');
         } else {
@@ -79,10 +78,10 @@ function AdminAbtPgFrm() {
         description: data.description,
       };
 
-      await axios.put('http://localhost:5001/api/about', payload);
+      await api.put('/api/about', payload);
 
       setSubmitError(null);
-      setSubmitSuccess('Home page updated successfully!');
+      setSubmitSuccess('About page updated successfully!');
 
       setTimeout(() => setSubmitSuccess(null), 3000);
     } catch (error) {
@@ -95,7 +94,7 @@ function AdminAbtPgFrm() {
     }
   };
 
-  // Handles resume upload (calls PUT /api/about/resume)
+  // Handles resume upload (PUT /api/about/resume)
   const handleResumeUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -105,15 +104,11 @@ function AdminAbtPgFrm() {
     formData.append('file', file);
 
     try {
-      const res = await axios.put(
-        'http://localhost:5001/api/about/resume',
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }
-      );
+      const res = await api.put('/api/about/resume', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
 
       const updated = res.data.about as AboutApiResponse;
 
@@ -133,7 +128,7 @@ function AdminAbtPgFrm() {
     }
   };
 
-  // Handles profile picture upload (calls PUT /api/about/profile-pic)
+  // Handles profile picture upload (PUT /api/about/profile-pic)
   const handleProfilePicUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -142,15 +137,11 @@ function AdminAbtPgFrm() {
     formData.append('file', file);
 
     try {
-      const res = await axios.put(
-        'http://localhost:5001/api/about/profile-pic',
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }
-      );
+      const res = await api.put('/api/about/profile-pic', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
 
       const updated = res.data.about as AboutApiResponse;
 
@@ -165,7 +156,7 @@ function AdminAbtPgFrm() {
       setSubmitError('Error uploading profile picture. Please try again.');
       setTimeout(() => setSubmitError(null), 5000);
     } finally {
-      // Optional: clear the file input
+      // Clear the file input
       e.target.value = '';
     }
   };

@@ -13,7 +13,15 @@ const app: Application = express();
 connectDB();
 
 // Middlewares
-app.use(cors());
+// CORS
+app.use(
+  cors({
+    origin: [
+      'http://localhost:5173', // Vite dev
+      'https://harryzhoudev.onrender.com', // <--- replace AFTER frontend is deployed
+    ],
+  })
+);
 app.use(express.json());
 app.use('/api/home', homeRoutes);
 app.use('/api/about', aboutRoutes);

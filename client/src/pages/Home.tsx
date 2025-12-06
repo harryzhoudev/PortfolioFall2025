@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from '../api/client';
 import { useState, useEffect } from 'react';
 import highlightLastTwoWords from '../utils/highlightLastTwoWords';
 import highlightLastTwoWordsGradient from '../utils/highlightLastTwoWordsGradient';
@@ -13,7 +13,7 @@ function home() {
   useEffect(() => {
     const fetchHomeContent = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/home');
+        const res = await api.get('/api/home');
         setHomeContent(res.data);
       } catch (err) {
         console.error('Error fetching home content:', err);
